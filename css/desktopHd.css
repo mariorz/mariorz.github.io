@@ -441,10 +441,10 @@ div {
   background-color    : rgba(0, 179, 163, 1.0);
   top                 : 2728px;
   height              : 10px;
-  width               : 1360px;
+  width               : 3000px;
   position            : absolute;
   margin              : 0;
-  left                : 40px;
+  left                : -1000px;
   -ms-transform       : rotate(0deg); /* IE 9 */
   -webkit-transform   : rotate(0deg); /* Chrome, Safari, Opera */
   transform           : rotate(0deg);
