@@ -326,9 +326,13 @@ form .row:first-child .floating-label-form-group {
 }
 
 .copyright {
-  background-color: #1a252f;
-  height: 300px;
-
+  background-color    : #03151b;
+  font-family         : "AvenirNext-Regular", Helvetica, Arial, serif;
+  font-size           : 14.0px;
+  color               : rgba(0, 179, 163, 1.0);
+  text-align          : justify;
+  letter-spacing      : 0.58px;
+  line-height         : 24.0px;
 }
 
 a {
