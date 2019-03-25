@@ -195,6 +195,35 @@ header.masthead h2 {
   }
 }
 
+header.sub-masthead {
+  padding-top: calc(6rem + 72px);
+  padding-bottom: 3rem;
+}
+
+header.sub-masthead h1 {
+  font-size: 3rem;
+  line-height: 3rem;
+}
+
+header.sub-masthead h2 {
+  font-size: 1.3rem;
+  font-family: 'Lato';
+}
+
+@media (min-width: 992px) {
+  header.sub-masthead {
+    padding-top: calc(6rem + 50px);
+    padding-bottom: 3rem;
+  }
+  header.sub-masthead h1 {
+    font-size: 4.75em;
+    line-height: 4rem;
+  }
+  header.sub-masthead h2 {
+    font-size: 1.75em;
+  }
+}
+
 .portfolio {
   margin-bottom: -15px;
 }
@@ -355,6 +384,14 @@ a:focus, a:hover, a:active {
   background-color: #00151B !important;
 }
 
+.bg-gray {
+  background-color: #f0f0f5 !important;
+}
+
+.bg-pale-green {
+  background-color: #FFFFFF !important;
+}
+
 .text-primary {
   color: #18BC9C !important;
 }
@@ -383,5 +420,71 @@ a:focus, a:hover, a:active {
   border-color: #1a252f;
 }
 
+.sub-logo {
+  width: auto ;
+  max-width: 100% ;
+  height: auto ;
+}
+
+.double-margin {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.sub-text {
+  margin-bottom: 3%;
+}
+.justify-text {
+  text-align: justify;
+}
 
 
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  width: 75vw;
+  margin-top: 3%;
+  height: auto ;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+.tabcontent {
+  padding: 3%;
+  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
