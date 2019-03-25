@@ -487,3 +487,12 @@ a:focus, a:hover, a:active {
   from {opacity: 0;}
   to {opacity: 1;}
 }
+
+.fade-block {
+  opacity: 1;
+  margin-bottom: 8%
+}
+
+.fade-block:hover { 
+  opacity: .6; 
+}
