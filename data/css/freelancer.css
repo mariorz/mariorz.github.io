@@ -362,6 +362,9 @@ form .row:first-child .floating-label-form-group {
   text-align          : justify;
   letter-spacing      : 0.58px;
   line-height         : 24.0px;
+  bottom: 0;
+  width: 100%;
+  position: relative;
 }
 
 a {

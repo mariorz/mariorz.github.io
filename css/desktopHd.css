@@ -46,11 +46,11 @@ div {
 .desktophd .group .bitmap {
   background-color    : rgba(255,255,255,0.0);
   top                 : 0px;
-  height              : 480px;
-  width               : 852px;
+  height              : 6000px;
+  width               : 4000px;
   position            : absolute;
   margin              : 0;
-  left                : 0px;
+  left                : -1000px;
   -ms-transform       : rotate(0deg); /* IE 9 */
   -webkit-transform   : rotate(0deg); /* Chrome, Safari, Opera */
   transform           : rotate(0deg);
