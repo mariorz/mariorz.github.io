@@ -38,7 +38,7 @@ body {
   font-size: 18px;
   color: #292D2D;
   background-color: #00151b;
-  background-image: url(images/bg.jpg);
+  background-image: url(../images/bg.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top center;
@@ -215,7 +215,7 @@ section,
 .hero-area .hero-content a.learn-more-btn:before {
   position: absolute;
   content: "";
-  background: url('images/learn-more-btn-sprite.png') no-repeat -14px -3px;
+  background: url('../images/learn-more-btn-sprite.png') no-repeat -14px -3px;
   width: 15px;
   height: 15px;
   left: 0px;
@@ -224,7 +224,7 @@ section,
   transition: .7s all;
 }
 .hero-area .hero-content a.learn-more-btn:hover:before {
-  background: url('images/learn-more-btn-sprite.png') no-repeat -14px -22px;
+  background: url('../images/learn-more-btn-sprite.png') no-repeat -14px -22px;
 }
 .hero-area .hero-img-shape {
   text-align: right;
