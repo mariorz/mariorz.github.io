@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+
+    <title>Careers</title>
+    <meta name="description" content="">
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--=== Favicon ===-->
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+    <!--=== Style CSS ===-->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/syntax.css">
+
+   	<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	<!--[if (gte IE 6)&(lte IE 8)]>
+		 <script type="text/javascript" src="js/selectivizr-min.js"></script>
+	<![endif]-->
+
+</head>
+
+<body>
+
+ <section class="career-hero-area">
+     <div class="container">
+         <div class="row">
+             <div class="col-lg-6">
+                <div class="career-logo-area">
+                     <a href="../index.html" class="logo">
+                        <img src="../images/logo.png" alt="">
+                    </a>
+                </div>
+             </div>
+         </div>
+     </div>
+ </section>
+
+  <section class="career-body-wrapper" >
+     <div class="container">
+         <div class="row">
+            
+            <h1>Defeating Java Setters with Clojure</h1>
+
+
+
+            <p>The Clojure standard library is 
+            <a href="https://clojuredocs.org/clojure.core/memfn">filled with</a> cool 
+            <a href="https://clojuredocs.org/clojure.core/doto">macros</a> 
+            and <a href="https://clojuredocs.org/clojure.core/aset">functions</a> 
+            to smooth Java interoperability and ameliorate the contrast between Java’s 
+            verbosity and Clojure’s conciseness, which becomes particularly disconcerting in
+            code that interacts with both languages non-trivially.</p>
+
+            <p>I came across one such frustration when writing some Excel sheet generation code
+            that relies heavily on an <a href="https://poi.apache.org/">Apache library (POI)</a>: the
+            difference between Java’s setters and Clojure’s corresponding system for 
+            specifying attributes. I had some boilerplate code littered with <code class="highlighter-rouge">doto</code> and 
+            <code class="highlighter-rouge">(.setX Y Z)</code> statements:</p>
+
+
+<pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">cell-style</span><span class="w"> </span><span class="p">[</span><span class="n">workbook</span><span class="w"> </span><span class="n">attrs</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="o">^</span><span class="n">CellStyle</span><span class="w"> </span><span class="n">style</span><span class="w"> </span><span class="p">(</span><span class="nf">.createCellStyle</span><span class="w"> </span><span class="n">workbook</span><span class="p">)</span><span class="w">
+        </span><span class="n">font</span><span class="w"> </span><span class="p">(</span><span class="nb">doto</span><span class="w"> </span><span class="p">(</span><span class="nf">.createFont</span><span class="w"> </span><span class="n">workbook</span><span class="p">)</span><span class="w">
+               </span><span class="p">(</span><span class="nf">.setBold</span><span class="w"> </span><span class="p">(</span><span class="nb">get</span><span class="w"> </span><span class="n">attrs</span><span class="w"> </span><span class="no">:bold</span><span class="w"> </span><span class="n">false</span><span class="p">))</span><span class="w">
+               </span><span class="p">(</span><span class="nf">.setItalic</span><span class="w"> </span><span class="p">(</span><span class="nb">get</span><span class="w"> </span><span class="n">attrs</span><span class="w"> </span><span class="no">:italic</span><span class="w"> </span><span class="n">false</span><span class="p">))</span><span class="w">
+               </span><span class="p">(</span><span class="nf">.setUnderline</span><span class="w"> </span><span class="p">(</span><span class="nb">get</span><span class="w"> </span><span class="n">attrs</span><span class="w"> </span><span class="no">:underline</span><span class="w"> </span><span class="n">false</span><span class="p">))</span><span class="w">
+               </span><span class="p">(</span><span class="nf">.setFontHeightInPoints</span><span class="w"> </span><span class="p">(</span><span class="nb">get</span><span class="w"> </span><span class="n">attrs</span><span class="w"> </span><span class="no">:font-height-in-points</span><span class="w"> </span><span class="mi">11</span><span class="p">))</span><span class="w">
+               </span><span class="p">(</span><span class="nf">.setFontName</span><span class="w"> </span><span class="p">(</span><span class="nb">get</span><span class="w"> </span><span class="n">attrs</span><span class="w"> </span><span class="no">:font-name</span><span class="w"> </span><span class="s">"Calibri"</span><span class="p">)))</span><span class="w">
+        </span><span class="c1">;; ditto for objects for DataFormat, Alignment, Border, etc</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">(</span><span class="nb">doto</span><span class="w"> </span><span class="n">style</span><span class="w"> 
+      </span><span class="p">(</span><span class="nf">.setFont</span><span class="w"> </span><span class="n">font</span><span class="p">)</span><span class="w">
+      </span><span class="c1">;; ditto for objects for DataFormat, Alignment, Border, etc</span><span class="w">
+      </span><span class="p">)))</span><span class="w">
+</span></code></pre>
+
+            <p>Aside from being inherently boring, boilerplate is not necessary—or is at least 
+            greatly reducible—in Lisp dialects! I can imagine a <code class="highlighter-rouge">setters</code> macro that takes care of all of this:</p>
+
+<pre class="highlight"><code><span class="p">(</span><span class="nb">macroexpand</span><span class="w"> 
+  </span><span class="o">'</span><span class="p">(</span><span class="nf">setters</span><span class="w"> 
+     </span><span class="p">{</span><span class="no">:bold</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="no">:italic</span><span class="w"> </span><span class="n">true</span><span class="w"> 
+      </span><span class="no">:font-name</span><span class="w"> </span><span class="s">"Arial"</span><span class="w"> </span><span class="no">:font-height-in-points</span><span class="w"> </span><span class="mi">12</span><span class="p">}))</span><span class="w">
+</span><span class="c1">; =&gt;</span><span class="w">
+</span><span class="c1">; (fn*</span><span class="w">
+</span><span class="c1">;  ([obj__1251__auto__]</span><span class="w">
+</span><span class="c1">;   (clojure.core/doto obj__1251__auto__</span><span class="w">
+</span><span class="c1">;    (.setBold true)</span><span class="w">
+</span><span class="c1">;    (.setItalic true)</span><span class="w">
+</span><span class="c1">;    (.setFontName "Arial")</span><span class="w">
+</span><span class="c1">;    (.setFontHeightInPoints 12))))</span><span class="w">
+</span></code></pre>
+
+                        <pre class="highlight"><code><span class="p">(</span><span class="k">defmacro</span><span class="w"> </span><span class="n">setters</span><span class="w">
+  </span><span class="s">"Given a compile-time literal map of attributes and values, return a function
+  that calls the corresponding setters on some java object.
+
+  E.g. (macroexpand
+         '(setters
+           {:bold true, :font-height-in-points 14, :font [\"large\" \"red\"]}))
+       ; =&gt; (fn [obj]
+              (doto obj
+                (.setBold true)
+                (.setFontHeightInPoints 14)
+                (.setFont \"large\" \"red\")))"</span><span class="w">
+  </span><span class="p">[</span><span class="n">attrs</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">when-not</span><span class="w"> </span><span class="p">(</span><span class="nb">map?</span><span class="w"> </span><span class="n">attrs</span><span class="p">)</span><span class="w">
+    </span><span class="p">(</span><span class="nf">throw</span><span class="w"> </span><span class="p">(</span><span class="nf">ex-info</span><span class="w"> </span><span class="s">"attrs must be a literal map, not a symbol"</span><span class="w"> </span><span class="p">{})))</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">capitalize</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">coll</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="n">string/capitalize</span><span class="w"> </span><span class="n">coll</span><span class="p">))</span><span class="w">
+        </span><span class="n">camel-case</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">kw</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">name</span><span class="w"> </span><span class="n">kw</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">string/split</span><span class="w"> </span><span class="o">#</span><span class="s">"\W"</span><span class="p">)</span><span class="w"> </span><span class="n">capitalize</span><span class="w"> </span><span class="n">string/join</span><span class="p">))</span><span class="w">
+        </span><span class="n">setter-sym</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">kw</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">-&gt;&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">camel-case</span><span class="w"> </span><span class="n">kw</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="s">".set"</span><span class="p">)</span><span class="w"> </span><span class="nb">symbol</span><span class="p">))</span><span class="w">
+        </span><span class="n">expanded</span><span class="w"> </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[[</span><span class="n">a</span><span class="w"> </span><span class="nb">val</span><span class="p">]]</span><span class="w">
+                        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">vector?</span><span class="w"> </span><span class="nb">val</span><span class="p">)</span><span class="w">
+                          </span><span class="o">`</span><span class="p">(</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="nf">setter-sym</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="o">~@</span><span class="nb">val</span><span class="p">)</span><span class="w">
+                          </span><span class="o">`</span><span class="p">(</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="nf">setter-sym</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="o">~</span><span class="nb">val</span><span class="p">)))</span><span class="w">
+                      </span><span class="n">attrs</span><span class="p">)]</span><span class="w">
+    </span><span class="o">`</span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">obj</span><span class="o">#</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">doto</span><span class="w"> </span><span class="n">obj</span><span class="o">#</span><span class="w"> </span><span class="o">~@</span><span class="n">expanded</span><span class="p">))))</span><span class="w">
+</span></code></pre>
+
+<p>Shout out to <code class="highlighter-rouge">memfn</code> in <code class="highlighter-rouge">clojure.core</code>, which clojureizes a Java function and 
+was the first thing I looked at when figuring out how to generate the setter code.</p>
+         
+
+ <pre class="highlight"><code><span class="c1">;;; clojure.core line 3837</span><span class="w">
+</span><span class="p">(</span><span class="k">defmacro</span><span class="w"> </span><span class="nb">memfn</span><span class="w">
+  </span><span class="s">"Expands into code that creates a fn that expects to be passed an
+  object and any args and calls the named instance method on the
+  object passing the args. Use when you want to treat a Java method as
+  a first-class fn. name may be type-hinted with the method receiver's
+  type in order to avoid reflective calls."</span><span class="w">
+  </span><span class="p">{</span><span class="no">:added</span><span class="w"> </span><span class="s">"1.0"</span><span class="p">}</span><span class="w">
+  </span><span class="p">[</span><span class="nb">name</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">args</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">t</span><span class="w"> </span><span class="p">(</span><span class="nb">with-meta</span><span class="w"> </span><span class="p">(</span><span class="nb">gensym</span><span class="w"> </span><span class="s">"target"</span><span class="p">)</span><span class="w">
+            </span><span class="p">(</span><span class="nb">meta</span><span class="w"> </span><span class="nb">name</span><span class="p">))]</span><span class="w">
+    </span><span class="o">`</span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="o">~</span><span class="n">t</span><span class="w"> </span><span class="o">~@</span><span class="n">args</span><span class="p">]</span><span class="w">
+       </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="o">~</span><span class="n">t</span><span class="w"> </span><span class="p">(</span><span class="o">~</span><span class="nb">name</span><span class="w"> </span><span class="o">~@</span><span class="n">args</span><span class="p">)))))</span><span class="w">
+</span></code></pre>
+         
+         </div>
+
+     </div>
+ </section>
+
+
+ <section class="cta-area">
+     <div class="container">
+         <div class="row">
+             <div class="cta-content">
+                 <p>We would love to understand your needs and help you grow your business.</p>
+             </div>
+             <div class="cta-btn">
+                 <a href="" class="book-a-demo-btn">Book a Demo</a>
+             </div>
+         </div>
+     </div>
+ </section>
+
+<footer class="footer-area">
+    <div class="container">
+        <div class="row footer-top">
+            <div class="col-lg-2 footer-menu">
+                <div class="single-footer-item">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="../careers.html">Careers</a></li>
+                        <li><a href="../research.html">Research</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 footer-terms">
+                <div class="single-footer-item">
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="single-footer-item">
+                    <h4>Disclosures & Policies</h4>
+                    <p>© Copyright 2018-2019 Sixtant is a trademark of M3 Capital Management SA de CV. All rights reserved. This material is provided for informational purposes only and does not constitute an offer or solicitation for the purchase or sale of any security or other financial instrument.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row footer-bottom-area">
+            <div class="col-lg-2 footer-linkedin">
+                <div class="single-footer-bottom-item">
+                    <a href="https://www.linkedin.com/company/sixtant/about/" target="_blank" class="linkedin">LinkedIn</a>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="single-footer-bottom-item copy-right-text">
+                    <p>© Copyright 2019 Sixtant. All Rights Reserved.</p>
+                </div>
+            </div>
+            <div class="col-lg-2 footer-logo-wrapper">
+                <div class="footer-logo">
+                    <a href="../index.html"><img src="../images/footer-logo.png" alt="footer logo"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    
+
+
+
+
+
+</body>
+
+</html>
