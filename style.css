@@ -200,6 +200,7 @@ section,
 .hero-area .hero-content a.logo {
   display: inline-block;
   margin-bottom: 35px;
+  width: 200px;
 }
 .hero-area .hero-content a.learn-more-btn {
   display: inline-block;
@@ -259,6 +260,7 @@ section.proprietary-trading-area .container.proprietary-bg .row .proprietary-tra
   padding-right: 50px;
   margin-bottom: 45px;
   transform: translateY(-10px);
+  font-weight: normal;
 }
 section.proprietary-trading-area .container.proprietary-bg .row .proprietary-trading-content p {
   padding-right: 55px;
@@ -436,6 +438,7 @@ section.cta-area .container .cta-btn a.book-a-demo-btn:hover {
 .footer-area .row.footer-bottom-area .footer-logo {
   text-align: right;
   float: right;
+  width: 200px;
 }
 .footer-area .row.footer-bottom-area .copy-right-text {
   opacity: .75;
