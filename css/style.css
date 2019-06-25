@@ -288,10 +288,6 @@ section.proprietary-trading-area .container.proprietary-bg .proprietary-trading-
   display: block;
 }
 
-section.proprietary-trading-area .container.proprietary-bg img {
-  display: block;
-  width: 100%;
-}
 section.proprietary-trading-area .container.proprietary-bg .proprietary-trading-img h3 {
   font-size: 27px;
   padding-right: 25px;
