@@ -289,6 +289,11 @@ section.proprietary-trading-area .container.proprietary-bg .proprietary-trading-
 }
 section.proprietary-trading-area .container.proprietary-bg .proprietary-trading-img img {
   display: block;
+
+}
+
+section.proprietary-trading-area .container.proprietary-bg img {
+  display: block;
   width: 100%;
 }
 section.proprietary-trading-area .container.proprietary-bg .proprietary-trading-img h3 {
